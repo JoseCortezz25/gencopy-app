@@ -1,8 +1,13 @@
+import Image from 'next/image';
+import Link from 'next/link';
 import Footer from '@/components/Footer';
 import Header from '@/components/Header';
 
 export const metadata = {
-  title: 'App Router',
+  title: 'GenCopy.ai - AI Copys Creation',
+  icons: {
+    icon: '/images/ai-brain.png',
+  }
 }
 
 export default function Page() {
@@ -15,17 +20,25 @@ export default function Page() {
             <div className="grid max-w-[1300px] mx-auto gap-4 px-4 sm:px-6 md:px-10 md:grid-cols-2 md:gap-16">
               <div>
                 <h1 className="lg:leading-tighter text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl xl:text-[3.4rem] 2xl:text-[3.75rem] mb-4">
-                  Welcome to AI Text and Title Creation
+                  Boosting your creativity with AI
                 </h1>
                 <p className="mx-auto max-w-[700px] text-gray-500 md:text-xl dark:text-gray-400 mb-5">
                   Harness the power of AI to generate creative and engaging text for your advertising and marketing campaigns.
                 </p>
                 <div className="space-x-4">
-                  <button className="bg-black text-white inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2">Get Started</button>
+                  <Link href="/chat">
+                    <button className="bg-black text-white inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2">Get Started</button>
+                  </Link>
                 </div>
               </div>
               <div>
-                <img src="https://placehold.co/500x500" alt="AI Text Creation" className="mx-auto aspect-[4/3] overflow-hidden rounded-xl object-cover" width="400" height="300" />
+                <Image
+                  src="/images/principal.jpeg"
+                  alt="AI Text Creation"
+                  className="mx-auto aspect-[4/3] overflow-hidden rounded-xl object-cover"
+                  width={400}
+                  height={300}
+                />
               </div>
             </div>
           </div>
