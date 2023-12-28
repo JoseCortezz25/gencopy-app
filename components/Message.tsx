@@ -1,3 +1,9 @@
+import dompurify from 'dompurify';
+import { Marked } from "marked";
+import { markedHighlight } from "marked-highlight";
+import hljs from 'highlight.js';
+import 'highlight.js/styles/tokyo-night-dark.css'
+
 export enum UserType {
   "USER",
   "BOT"
@@ -43,12 +49,24 @@ const Avatar = ({ type }: { type: UserType }) => {
 };
 
 const Message = ({ user, message }: MessageProps) => {
+  const marked = new Marked(
+    markedHighlight({
+      langPrefix: 'hljs language-',
+      highlight(code, lang) {
+        const language = hljs.getLanguage(lang) ? lang : 'plaintext';
+        return hljs.highlight(code, { language }).value;
+      }
+    })
+  );
+
+  const parsed = dompurify.sanitize(marked.parse(message) as string);
+
   return (
-    <article className="w-full flex justify-between border border-gray-200 px-[20px] pt-[10px] pb-[15px] rounded-md shadow-sm">
+    <article className="w-full flex justify-between px-[20px] pt-[10px] pb-[15px] rounded-md">
       <div className="size-10 grid place-content-center">
         <Avatar type={user} />
       </div>
-      <p className="w-[93%] pt-[7px]">{message}</p>
+      <p className="w-[93%] pt-[7px]" dangerouslySetInnerHTML={{ __html: parsed }}></p>
     </article>
   )
 }

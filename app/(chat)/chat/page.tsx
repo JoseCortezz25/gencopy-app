@@ -1,13 +1,15 @@
 "use client";
 
+import Loader from "@/components/Loader";
 import Message, { MessageProps, UserType } from "@/components/Message"
 import { messagesMock } from "__mocks__/messages"
 import { cn } from "app/utils/utils";
 import Link from "next/link"
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { toast } from 'sonner';
 
 const ChatPage = () => {
+  const messagesContainerRef = useRef<HTMLDivElement>(null);
   const [messages, setMessages] = useState<MessageProps[]>([]);
   const [currentMessage, setCurrentMessage] = useState("");
   const [error, setError] = useState(false);
@@ -47,6 +49,12 @@ const ChatPage = () => {
     setMessages([]);
   };
 
+  useEffect(() => {
+    if (messagesContainerRef.current) {
+      messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
+    }
+  }, [messages]);
+
   return (
     <main className="flex flex-row bg-gray-100 dark:bg-gray-900 h-screen overflow-hidden">
       <aside className="w-[20%] bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 ">
@@ -56,31 +64,6 @@ const ChatPage = () => {
         </div>
         <div className="border-t border-gray-200 dark:border-gray-700">
           <nav className="mt-6 space-y-1">
-            {/* <a
-              className="flex items-center px-6 py-2 text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700"
-              href="#"
-              rel="ugc"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="w-4 h-4 mr-3"
-              >
-                <path d="M13 4h3a2 2 0 0 1 2 2v14"></path>
-                <path d="M2 20h3"></path>
-                <path d="M13 20h9"></path>
-                <path d="M10 12v.01"></path>
-                <path d="M13 4.562v16.157a1 1 0 0 1-1.242.97L5 20V5.562a2 2 0 0 1 1.515-1.94l4-1A2 2 0 0 1 13 4.561Z"></path>
-              </svg>
-              <span>Open Chats</span>
-            </a> */}
             <a
               className="flex items-center px-6 py-2 text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700"
               href="#"
@@ -107,12 +90,23 @@ const ChatPage = () => {
         </div>
       </aside>
       <section className="w-[80%] flex flex-col p-6 justify-between">
-        <div>
+        <div className="relative">
           <h2 className="text-xl font-bold dark:text-gray-100 mb-3">AI Chat</h2>
-          <div className="h-[75vh] max-h-[75vh] overflow-y-scroll rounded-md space-y-2">
+          <div className="h-[75vh] max-h-[75vh] overflow-y-scroll rounded-md space-y-2 scrollbar-hide" ref={messagesContainerRef}>
+            {messages.length === 0 && (
+              <div className="flex flex-col items-center justify-center h-full">
+                <img src="/images/ai-brain.png" alt="AI Brain" className="h-40 w-40" />
+                <p className="text-gray-500 dark:text-gray-400">Start a conversation with AI</p>
+              </div>
+            )}
             {messages.map(({ user, message }, index) => (
-              <Message key={index} user={user} message={message} />
+              <Message
+                key={index}
+                user={user}
+                message={message}
+              />
             ))}
+            {loading && <Loader />}
           </div>
         </div>
 
