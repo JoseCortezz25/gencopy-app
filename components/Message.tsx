@@ -66,7 +66,7 @@ const Message = ({ user, message }: MessageProps) => {
       <div className="size-10 grid place-content-center">
         <Avatar type={user} />
       </div>
-      <p className="w-[93%] pt-[7px]" dangerouslySetInnerHTML={{ __html: parsed }}></p>
+      <p className="w-[93%] pt-[7px] dark:text-neutral-200" dangerouslySetInnerHTML={{ __html: parsed }}></p>
     </article>
   )
 }
